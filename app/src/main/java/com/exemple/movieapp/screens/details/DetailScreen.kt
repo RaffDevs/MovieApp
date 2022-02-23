@@ -1,35 +1,60 @@
 package com.exemple.movieapp.screens.details
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.exemple.movieapp.model.Movie
 
 @Composable
-fun DetailScreen(navController: NavController, params: String?) {
-    Surface(
-        modifier = Modifier.fillMaxSize()
+fun DetailScreen(navController: NavController, movie: Movie) {
+    Scaffold(
+        topBar = {
+            DetailTopBar(navController)
+        }
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        Surface(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text(
-                text = "$params Screen"
-            )
-            
-            Spacer(modifier = Modifier.height(30.dp))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "${movie.title} Screen"
+                )
 
-            Button(onClick = {
-                navController.popBackStack();
-            }) {
-                Text("Go Back")
+                Spacer(modifier = Modifier.height(30.dp))
+
+                Button(onClick = {
+                    navController.popBackStack();
+                }) {
+                    Text("Go Back")
+                }
             }
         }
     }
+
+}
+
+@Composable
+fun DetailTopBar(navController: NavController) {
+    TopAppBar(
+        title = { Text(text = "Details")},
+        navigationIcon = {
+            IconButton(onClick = {
+                navController.popBackStack();
+            }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Arrow Back"
+                )
+            }
+        }
+    )
 }

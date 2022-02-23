@@ -6,6 +6,10 @@ enum class MovieScreens {
     HomeScreen,
     DetailScreen;
 
+    object DetailsRoutes {
+        val main = "${DetailScreen.name}/{movie}"
+    }
+
     companion object {
         fun fromRoute(route: String?): MovieScreens {
             return when(route?.substringBefore("/")) {

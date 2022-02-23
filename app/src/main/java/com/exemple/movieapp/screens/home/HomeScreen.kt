@@ -1,5 +1,6 @@
 package com.exemple.movieapp.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,9 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.exemple.movieapp.MovieRow
 import com.exemple.movieapp.MyAppBar
+import com.exemple.movieapp.model.Movie
+import com.exemple.movieapp.model.getMovies
 import com.exemple.movieapp.navigation.MovieScreens
+import com.exemple.movieapp.widgets.MovieRow
+import com.google.gson.Gson
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -28,15 +32,7 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun MainContent(
     navController: NavController,
-    movieList: List<String> = listOf(
-        "Avatar",
-        "Spider Man",
-        "Avengers",
-        "Iron Man",
-        "Batman",
-        "Thor",
-        "Man of Steel"
-    )
+    movieList: List<Movie> = getMovies()
 ) {
     val context = LocalContext.current
 
@@ -47,8 +43,11 @@ fun MainContent(
         LazyColumn{
             items(items = movieList) { movie ->
                 MovieRow(movie) {
+                    val movieJson = Gson().toJson(movie)
+                    Log.d("Movie", movieJson)
                     navController.navigate(
-                        route = MovieScreens.DetailScreen.name + "/$movie",
+                        route = MovieScreens.DetailScreen.name + "?movie={movie}"
+                            .replace("{movie}", movieJson)
                     )
                 }
             }
